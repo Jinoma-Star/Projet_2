@@ -1,6 +1,6 @@
 function miseAJourGalerie(travaux) {
-    const galerie = document.querySelector('.gallery'); // Sélectionne le premier élément avec la classe 'gallery'
-    galerie.innerHTML = ''; // Nettoyer le contenu existant
+    const galerie = document.querySelector('.gallery');
+    galerie.innerHTML = ''; 
   
     travaux.forEach(travail => {
       const figure = document.createElement('figure');
@@ -17,12 +17,19 @@ function miseAJourGalerie(travaux) {
     });
   }
   
+  function filtrerTravaux(categorie) {
+    if (categorie === 'Tous') {
+      miseAJourGalerie(travauxTous);
+    } else {
+      const travauxFiltres = travauxTous.filter(travail => travail.category.name === categorie);
+      miseAJourGalerie(travauxFiltres);
+    }
+  }
+
   fetch('http://localhost:5678/api/works')
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(travaux => miseAJourGalerie(travaux))
-    .catch(error => console.error('There has been a problem with your fetch operation:', error));
+  .then(response => response.json())
+  .then(travaux => {
+    travauxTous = travaux;
+    miseAJourGalerie(travauxTous);
+  })
+  .catch(error => console.error('Erreur:', error));
