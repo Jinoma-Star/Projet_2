@@ -1,8 +1,19 @@
+let travauxTous;
+
+fetch('http://localhost:5678/api/works')
+.then(response => response.json())
+.then(travaux => {
+  travauxTous = travaux;
+  miseAJourGalerie(travauxTous);
+})
+.catch(error => console.error('Erreur:', error));
+
+
 function miseAJourGalerie(travaux) {
-    const galerie = document.querySelector('.gallery');
+  const galerie = document.querySelector('.gallery');
     galerie.innerHTML = ''; 
   
-    travaux.forEach(travail => {
+  travaux.forEach(travail => {
       const figure = document.createElement('figure');
       const img = document.createElement('img');
       img.src = travail.imageUrl;
@@ -17,7 +28,7 @@ function miseAJourGalerie(travaux) {
     });
   }
   
-  function filtrerTravaux(categorie) {
+function filtrerTravaux(categorie) {
     if (categorie === 'Tous') {
       miseAJourGalerie(travauxTous);
     } else {
@@ -26,10 +37,4 @@ function miseAJourGalerie(travaux) {
     }
   }
 
-  fetch('http://localhost:5678/api/works')
-  .then(response => response.json())
-  .then(travaux => {
-    travauxTous = travaux;
-    miseAJourGalerie(travauxTous);
-  })
-  .catch(error => console.error('Erreur:', error));
+
