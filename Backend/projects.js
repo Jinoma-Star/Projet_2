@@ -1,5 +1,6 @@
 let worksAll;
 
+// Gallerie d'images !!
 fetch('http://localhost:5678/api/works')
 .then(response => response.json())
 .then(works => {
@@ -29,7 +30,7 @@ function worksGallery(works) {
   }
   
 
-
+// Tri des images par catégorie  !!
   function fetchCategories() {
     fetch('http://localhost:5678/api/categories')
     .then(response => response.json())
