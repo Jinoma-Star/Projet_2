@@ -1,26 +1,26 @@
-let worksAll;
+let travauxTous;
 
 fetch('http://localhost:5678/api/works')
 .then(response => response.json())
-.then(works => {
-  worksAll = works;
-  worksGallery(worksAll);
+.then(travaux => {
+  travauxTous = travaux;
+  miseAJourGalerie(travauxTous);
 })
 .catch(error => console.error('Erreur:', error));
 
 
-function worksGallery(_works) {
-  const gallery = document.querySelector('.gallery');
-    gallery.innerHTML = ''; 
+function miseAJourGalerie(travaux) {
+  const galerie = document.querySelector('.gallery');
+    galerie.innerHTML = ''; 
   
-  travaux.forEach(work => {
+  travaux.forEach(travail => {
       const figure = document.createElement('figure');
       const img = document.createElement('img');
-      img.src = work.imageUrl;
-      img.alt = work.title;
+      img.src = travail.imageUrl;
+      img.alt = travail.title;
   
       const figcaption = document.createElement('figcaption');
-      figcaption.textContent = work.title;
+      figcaption.textContent = travail.title;
   
       figure.appendChild(img);
       figure.appendChild(figcaption);
@@ -28,12 +28,12 @@ function worksGallery(_works) {
     });
   }
   
-function worksFilter(category) {
-    if (category === 'Tous') {
-      worksGallery(worksAll);
+function filtrerTravaux(categorie) {
+    if (categorie === 'Tous') {
+      miseAJourGalerie(travauxTous);
     } else {
-      const workFilters = worksAll.filter(work => work.category.name === category);
-      worksGallery(workFilters);
+      const travauxFiltres = travauxTous.filter(travail => travail.category.name === categorie);
+      miseAJourGalerie(travauxFiltres);
     }
   }
 
