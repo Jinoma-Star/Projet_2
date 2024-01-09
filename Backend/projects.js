@@ -9,7 +9,7 @@ fetch('http://localhost:5678/api/works')
 .catch(error => console.error('Erreur:', error));
 
 
-function worksGallery(travaux) {
+function worksGallery(_works) {
   const gallery = document.querySelector('.gallery');
     gallery.innerHTML = ''; 
   
