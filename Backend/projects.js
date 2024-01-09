@@ -34,12 +34,12 @@ function worksGallery(works) {
     fetch('http://localhost:5678/api/categories')
     .then(response => response.json())
     .then(categories => {
-        updateCategoryFilters(categories);
+        categoryFilter(categories);
     })
     .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
 }
 
-  function updateCategoryFilters(categories) {
+  function categoryFilter(categories) {
   const filtersDiv = document.getElementById('filters');
 
   // Créer et ajouter le bouton "Tous"
