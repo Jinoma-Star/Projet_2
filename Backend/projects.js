@@ -28,13 +28,18 @@ function worksGallery(works) {
     });
   }
   
-function worksFilter(category) {
-    if (category === 'Tous') {
-      worksGallery(worksAll);
-    } else {
-      const worksFilter = worksAll.filter(work => work.category.name === category);
-      worksGallery(worksFilter);
+  function worksFilter(category) {
+    let url = 'http://localhost:5678/api/works';
+    if (category !== 'Tous') {
+        url += `?category=${encodeURIComponent(category)}`;
     }
-  }
+
+    fetch(url)
+    .then(response => response.json())
+    .then(works => {
+        worksGallery(works);
+    })
+    .catch(error => console.error('Erreur:', error));
+}
 
 
