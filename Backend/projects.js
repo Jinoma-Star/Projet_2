@@ -7,7 +7,7 @@ fetch('http://localhost:5678/api/works')
   worksAll = works;
   worksGallery(worksAll);
 })
-.catch(error => console.error('Erreur:', error));
+.catch(error => console.error('Erreur lors de la récupération des images:', error));
 
 
 function worksGallery(works) {
