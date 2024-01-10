@@ -1,11 +1,8 @@
-let worksAll;
-
 // Gallerie d'images !!
 fetch('http://localhost:5678/api/works')
 .then(response => response.json())
 .then(works => {
-  worksAll = works;
-  worksGallery(worksAll);
+  worksGallery(works);
 })
 .catch(error => console.error('Erreur lors de la récupération des images:', error));
 
@@ -31,6 +28,11 @@ function worksGallery(works) {
   
 
 // Tri des images par catégorie  !!
+
+  // Initialisation
+  fetchCategories();
+
+
   function fetchCategories() {
     fetch('http://localhost:5678/api/categories')
     .then(response => response.json())
@@ -63,7 +65,4 @@ function worksFilter(categoryName) {
     const filteredWorks = worksAll.filter(work => work.category.name === categoryName);
     worksGallery(filteredWorks);
 }
-
-// Initialisation
-fetchCategories(); // Appeler cette fonction au chargement de la page
 
