@@ -10,16 +10,23 @@
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
 	<script src="../Backend/projects.js"></script>
+	<script src="../Backend/login.js"></script>
 	<script src="https://kit.fontawesome.com/5ecaa83591.js" crossorigin="anonymous"></script>
 </head>
+
 <body>
+<div id="editModeBanner" style="display: none; background-color: black; color: white; text-align: center; padding: 10px;">
+	<i class="fa-solid fa-pen-to-square" style="color: #ffffff;"></i>
+	Mode Édition
+</div>
+
 <header>
 	<h1>Sophie Bluel <span>Architecte d'intérieur</span></h1>
 	<nav>
 		<ul>
 			<li><a href="index.html">projets</a></li>
 			<li><a href="#contact">contact</a></li>
-			<li><a href="login.html">login</a></li>
+			<li><a href="login.html" id="loginLogoutLink">login</a></li>
 			<li><a href=""><img src="./assets/icons/instagram.png" alt="Instagram"></a></li>
 		</ul>
 	</nav>
