@@ -46,17 +46,35 @@ function categoryFilter(categories, works) {
   // Créer et ajouter le bouton "Tous"
   const allButton = document.createElement('button');
   allButton.textContent = 'Tous';
-  allButton.onclick = () => worksGallery(works);
+  allButton.classList.add('button-active'); // Ajouter la classe 'button-active'
+  allButton.onclick = () => {
+    updateActiveButton(allButton);
+    worksGallery(works);
+  };
   filtersDiv.appendChild(allButton);
 
   // Ajouter les boutons pour chaque catégorie
   categories.forEach(category => {
     const button = document.createElement('button');
     button.textContent = category.name;
-    button.onclick = () => worksFilter(category.name, works);
+    button.onclick = () => {
+      updateActiveButton(button);
+      worksFilter(category.name, works);
+    };
     filtersDiv.appendChild(button);
   });
 }
+
+function updateActiveButton(activeButton) {
+  // Retirer la classe 'button-active' de tous les boutons
+  document.querySelectorAll('#filters button').forEach(button => {
+    button.classList.remove('button-active');
+  });
+
+  // Ajouter la classe 'button-active' au bouton actif
+  activeButton.classList.add('button-active');
+}
+
 
 function worksFilter(categoryName, works) {
   const filteredWorks = works.filter(work => work.category.name === categoryName);
