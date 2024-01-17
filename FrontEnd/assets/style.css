@@ -103,6 +103,8 @@ a {
 li:hover {
 	color: #B1663C;
 }
+
+/*INTRODUCTION*/
 #introduction {
 	display: flex;
 	align-items: center;
@@ -131,6 +133,7 @@ li:hover {
 	margin-bottom: 1em;
 }
 
+/*FILTRES*/
 #filters {
 	display: flex;
 	justify-content: center;
@@ -159,6 +162,8 @@ li:hover {
 	color: white;
   }
 
+
+/* GALERIE*/
 .gallery {
 	width: 100%;
 	display: grid;
@@ -172,6 +177,8 @@ li:hover {
 .gallery img {
 	width: 100%;
 
+
+/* CONTACT */
 }
 #contact {
 	width: 50%;
@@ -216,6 +223,8 @@ input[type="submit"]{
 	border-radius: 60px ;
 }
 
+
+/*Footer*/
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
