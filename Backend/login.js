@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginForm = document.querySelector('form');
-    const loginLogoutLink = document.getElementById('loginLogoutLink');
-    const editModeBanner = document.getElementById('editModeBanner');
     
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -36,7 +34,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 alert(error.message);
             });
         } else {
-            alert("Identifiants incorrects");
+            alert("Identifiant(s) incorrect(s)");
         }
     });
 });
