@@ -1,7 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Éléments pour la gestion de la connexion/déconnexion et du mode édition
     const loginLogoutLink = document.getElementById('loginLogoutLink');
     const editModeBanner = document.getElementById('editModeBanner');
-    
+    const filtersDiv = document.getElementById('filters');
+    const editLinkContainer = document.getElementById('editLinkContainer');
+    const editLink = document.getElementById('editLink');
+    const modalOverlay = document.getElementById('modalOverlay');
 
     // Vérifier si un token d'authentification est stocké
     if (sessionStorage.getItem('authToken')) {
@@ -16,37 +20,43 @@ document.addEventListener('DOMContentLoaded', () => {
             editModeBanner.style.display = 'none'; // Masquer le bandeau Mode Édition
             window.location.href = 'index.html';
         });
-    } else {
-        loginLogoutLink.textContent = 'login';
-        loginLogoutLink.href = 'login.html';
-        editModeBanner.style.display = 'none'; // S'assurer que le bandeau est masqué si non connecté
-    }
-});
 
-document.addEventListener('DOMContentLoaded', () => {
-    const filtersDiv = document.getElementById('filters');
-    const editLinkContainer = document.getElementById('editLinkContainer');
-    const editLink = document.getElementById('editLink');
-    // Supposons que vous avez une fonction pour ouvrir la modale
-    const openModal = () => {
-        // Logique pour ouvrir la modale
-    };
-
-    if (sessionStorage.getItem('authToken')) {
+        // Utilisateur connecté : masquer les filtres et afficher le lien d'édition
         filtersDiv.style.display = 'none';
         editLinkContainer.style.display = 'block';
     } else {
+        // Utilisateur non connecté : afficher les filtres et masquer le lien d'édition
+        loginLogoutLink.textContent = 'login';
+        loginLogoutLink.href = 'login.html';
+        editModeBanner.style.display = 'none';
         filtersDiv.style.display = 'flex';
         editLinkContainer.style.display = 'none';
     }
 
-    editLink.addEventListener('click', openModal);
+    // Fonction pour ouvrir la modale
+    const openModal = () => {
+        fetch('http://localhost:5678/api/works')
+        .then(response => response.json())
+        .then(works => {
+            worksGallery(works, '.gallery-modal'); // Utilisez une classe différente pour la galerie dans la modale
+        })
+        .catch(error => console.error('Erreur lors de la récupération des images:', error));
+
+        document.getElementById('modalOverlay').style.display = 'block';
+        document.getElementById('editModal').style.display = 'block';
+    };
+
+    // Fonction pour fermer la modale
+    const closeModal = () => {
+        document.getElementById('modalOverlay').style.display = 'none';
+        document.getElementById('editModal').style.display = 'none';
+    };
+
+    // Ajout d'écouteurs d'événements
+    if (editLink) {
+        editLink.addEventListener('click', openModal);
+    }
+    if (modalOverlay) {
+        modalOverlay.addEventListener('click', closeModal);
+    }
 });
-
-const openModal = () => {
-    document.getElementById('editModal').style.display = 'block';
-};
-
-const closeModal = () => {
-    document.getElementById('editModal').style.display = 'none';
-};

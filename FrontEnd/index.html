@@ -43,20 +43,19 @@
 	</section>
 
 	<section id="portfolio">
-		<h2>Mes Projets</h2>
-		<div id="editLinkContainer" style="display: none;">
-			<a id="editLink">
-				<i class="fa-solid fa-pen-to-square"></i>
-				modifier
-			</a>
+		<div id="galleryhead">
+			<h2>Mes Projets</h2>
+				<div id="editLinkContainer" style="display: none;">
+					<a id="editLink">
+						<i class="fa-solid fa-pen-to-square"></i>
+						modifier
+					</a>
+				</div>
 		</div>
-		<div id="filters"></div>
-		<div class="gallery"></div>
+			<div id="filters"></div>
+			<div class="gallery"></div>
 	</section>
 
-	<div id="editModal" style="display: none;">
-		<!-- Contenu de la modale ici -->
-	</div>
 
 	<section id="contact">
 		<h2>Contact</h2>
@@ -71,6 +70,7 @@
 			<input type="submit" value="Envoyer">
 		</form>
 	</section>
+
 </main>
 
 <footer>
@@ -80,6 +80,16 @@
 		</ul>
 	</nav>
 </footer>
+
+<div id="modalOverlay"></div>
+		<div id="editModal">
+			<div id="insideModal">
+				<h3>Galerie photo</h3>
+				<div class="gallery-modal"></div>
+				<div class="line"></div>
+				<button id="workaddbutton">Ajouter une photo</button>
+			</div>
+		</div>
 
 <script src="../Backend/projects.js"></script>
 <script src="../Backend/editmod.js"></script>

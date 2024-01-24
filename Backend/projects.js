@@ -1,59 +1,60 @@
 // Chargement initial des données des travaux
 fetch('http://localhost:5678/api/works')
-.then(response => response.json())
-.then(works => {
-  initializeGalleryAndFilters(works);
-})
-.catch(error => console.error('Erreur lors de la récupération des images:', error));
+  .then(response => response.json())
+  .then(works => {
+    initializeGalleryAndFilters(works);
+  })
+  .catch(error => console.error('Erreur lors de la récupération des images:', error));
 
 function initializeGalleryAndFilters(works) {
-  worksGallery(works); // Affiche la galerie avec toutes les œuvres
+  worksGallery(works, '.gallery', true); // Affiche la galerie avec toutes les œuvres et sous-titres
   fetchCategories(works); // Initialise les filtres avec les catégories
 }
 
-function worksGallery(works) {
-  const gallery = document.querySelector('.gallery');
+function worksGallery(works, gallerySelector, showCaptions = true) {
+  const gallery = document.querySelector(gallerySelector);
   gallery.innerHTML = ''; // Nettoie la galerie avant l'affichage
-  
+
   works.forEach(work => {
     const figure = document.createElement('figure');
     const img = document.createElement('img');
     img.src = work.imageUrl;
     img.alt = work.title;
 
-    const figcaption = document.createElement('figcaption');
-    figcaption.textContent = work.title;
-
     figure.appendChild(img);
-    figure.appendChild(figcaption);
+
+    if (showCaptions) {
+      const figcaption = document.createElement('figcaption');
+      figcaption.textContent = work.title;
+      figure.appendChild(figcaption);
+    }
+
     gallery.appendChild(figure);
   });
 }
 
 function fetchCategories(works) {
   fetch('http://localhost:5678/api/categories')
-  .then(response => response.json())
-  .then(categories => {
-    categoryFilter(categories, works);
-  })
-  .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
+    .then(response => response.json())
+    .then(categories => {
+      categoryFilter(categories, works);
+    })
+    .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
 }
 
 function categoryFilter(categories, works) {
   const filtersDiv = document.getElementById('filters');
   filtersDiv.innerHTML = ''; // Nettoie les filtres avant l'affichage
 
-  // Créer et ajouter le bouton "Tous"
   const allButton = document.createElement('button');
   allButton.textContent = 'Tous';
-  allButton.classList.add('button-active'); // Ajouter la classe 'button-active'
+  allButton.classList.add('button-active');
   allButton.onclick = () => {
     updateActiveButton(allButton);
-    worksGallery(works);
+    worksGallery(works, '.gallery', true);
   };
   filtersDiv.appendChild(allButton);
 
-  // Ajouter les boutons pour chaque catégorie
   categories.forEach(category => {
     const button = document.createElement('button');
     button.textContent = category.name;
@@ -66,18 +67,14 @@ function categoryFilter(categories, works) {
 }
 
 function updateActiveButton(activeButton) {
-  // Retirer la classe 'button-active' de tous les boutons
   document.querySelectorAll('#filters button').forEach(button => {
     button.classList.remove('button-active');
   });
 
-  // Ajouter la classe 'button-active' au bouton actif
   activeButton.classList.add('button-active');
 }
 
-
 function worksFilter(categoryName, works) {
   const filteredWorks = works.filter(work => work.category.name === categoryName);
-  worksGallery(filteredWorks);
+  worksGallery(filteredWorks, '.gallery', true); // Pass true pour afficher les sous-titres
 }
-

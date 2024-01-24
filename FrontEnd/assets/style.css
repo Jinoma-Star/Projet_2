@@ -84,6 +84,17 @@ h2{
 	font-size: 30px;
 	color: #1D6154
 }
+
+h3 {
+	color: #000;
+	text-align: center;
+	font-family: "Work Sans";
+	font-size: 26px;
+	font-style: normal;
+	font-weight: 400;
+	line-height: normal;
+}
+
 nav ul {
 	display: flex;
 	align-items: center;
@@ -139,7 +150,7 @@ li:hover {
 	justify-content: center;
 	align-items: center;
 	gap: 10px;
-	margin: 51px 0 51px 0;
+	margin: 31px 0 51px 0;
 }
 
 #filters button {
@@ -163,12 +174,99 @@ li:hover {
   }
 
 /*MODAL*/
-#editModal {
-    /* Styles pour la modale (position, taille, etc.) */
+#modalOverlay {
+    display: none; /* caché par défaut */
+    position: fixed; /* position fixe par rapport à la fenêtre du navigateur */
+    top: 0;
+    left: 0;
+    width: 100%; /* largeur totale de la fenêtre */
+    height: 100%; /* hauteur totale de la fenêtre */
+    background: rgba(0, 0, 0, 0.30); /* fond semi-transparent noir */
+    z-index: 1000; /* s'assurer qu'il est au-dessus des autres éléments */
 }
 
 
+#editModal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 630px;
+    height: 688px;
+    background-color: white;
+    z-index: 1001;
+	border-radius: 10px;
+	background: #FFF;
+    /* Autres styles de la modale (bordure, ombre, etc.) */
+}
+
+
+#insideModal {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#insideModal h3 {
+	margin-top: 60px;
+}
+
+#insideModal button {
+	margin: 38px;
+}
+
+
+.gallery-modal {
+	display: flex;
+	align-items: flex-start;
+	flex-wrap: wrap;
+	gap: 6.23px;
+	padding: 0 105.25px 0 105.25px;
+}
+
+.gallery-modal figure {
+	width: 78.123px;
+	height: 104.08px;	
+}
+
+.gallery-modal img {
+	width: 78.123px;
+	height: 104.08px;	
+}
+
+.line {
+    width: 420px;
+    height: 1px;
+    background-color: #B3B3B3;
+}
+
+#workaddbutton {
+	width: 237px;
+	height: 36px;
+	flex-shrink: 0;
+	border-radius: 60px;
+	background: #1D6154;
+	color: #FFF;
+	text-align: center;
+	font-family: Syne;
+	font-size: 14px;
+	font-style: normal;
+	font-weight: 700;
+	line-height: normal;
+}
+
+
+
 /* GALERIE*/
+#galleryhead {
+	display: flex;
+    justify-content: center;
+    align-items: baseline;
+	gap: 31px;
+}
+
+
 .gallery {
 	width: 100%;
 	display: grid;
