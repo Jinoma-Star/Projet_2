@@ -162,6 +162,11 @@ li:hover {
 	color: white;
   }
 
+/*MODAL*/
+#editModal {
+    /* Styles pour la modale (position, taille, etc.) */
+}
+
 
 /* GALERIE*/
 .gallery {

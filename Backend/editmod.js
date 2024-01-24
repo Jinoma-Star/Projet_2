@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loginLogoutLink = document.getElementById('loginLogoutLink');
+    const editModeBanner = document.getElementById('editModeBanner');
     
 
     // Vérifier si un token d'authentification est stocké
@@ -21,3 +22,31 @@ document.addEventListener('DOMContentLoaded', () => {
         editModeBanner.style.display = 'none'; // S'assurer que le bandeau est masqué si non connecté
     }
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const filtersDiv = document.getElementById('filters');
+    const editLinkContainer = document.getElementById('editLinkContainer');
+    const editLink = document.getElementById('editLink');
+    // Supposons que vous avez une fonction pour ouvrir la modale
+    const openModal = () => {
+        // Logique pour ouvrir la modale
+    };
+
+    if (sessionStorage.getItem('authToken')) {
+        filtersDiv.style.display = 'none';
+        editLinkContainer.style.display = 'block';
+    } else {
+        filtersDiv.style.display = 'flex';
+        editLinkContainer.style.display = 'none';
+    }
+
+    editLink.addEventListener('click', openModal);
+});
+
+const openModal = () => {
+    document.getElementById('editModal').style.display = 'block';
+};
+
+const closeModal = () => {
+    document.getElementById('editModal').style.display = 'none';
+};
