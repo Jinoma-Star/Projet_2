@@ -38,10 +38,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost:5678/api/works')
         .then(response => response.json())
         .then(works => {
-            worksGallery(works, '.gallery-modal'); // Utilisez une classe différente pour la galerie dans la modale
+            worksGallery(works, '.gallery-modal', false); // Pas de sous-titres dans la modale
         })
         .catch(error => console.error('Erreur lors de la récupération des images:', error));
-
+    
         document.getElementById('modalOverlay').style.display = 'block';
         document.getElementById('editModal').style.display = 'block';
     };
@@ -60,3 +60,20 @@ document.addEventListener('DOMContentLoaded', () => {
         modalOverlay.addEventListener('click', closeModal);
     }
 });
+
+// Fonction pour supprimer une œuvre
+function deleteWork(workId, figureElement) {
+    fetch(`http://localhost:5678/api/works/${workId}`, {
+      method: 'DELETE',
+      headers: {
+        'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Échec de la suppression de l’œuvre');
+      }
+      figureElement.remove(); // Retire l'œuvre du DOM
+    })
+    .catch(error => console.error('Erreur lors de la suppression:', error));
+  }

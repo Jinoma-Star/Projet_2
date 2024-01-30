@@ -17,11 +17,21 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
 
   works.forEach(work => {
     const figure = document.createElement('figure');
+    figure.classList.add('gallery-item'); // Ajout d'une classe pour le styling
+
     const img = document.createElement('img');
     img.src = work.imageUrl;
     img.alt = work.title;
-
     figure.appendChild(img);
+
+    // Ajouter un bouton de suppression pour chaque œuvre
+    if (gallerySelector === '.gallery-modal') {
+      const deleteButton = document.createElement('button');
+      deleteButton.classList.add('delete-button');
+      deleteButton.innerHTML = '<i class="fa-solid fa-trash-can" style="color: #ffffff;"></i>'; // Icône de suppression
+      deleteButton.onclick = () => deleteWork(work.id, figure);
+      figure.appendChild(deleteButton);
+    }
 
     if (showCaptions) {
       const figcaption = document.createElement('figcaption');
