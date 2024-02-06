@@ -270,6 +270,18 @@ li:hover {
 }
 
 
+#insideModal #cancelAddButton {
+	margin: 0;
+    top: 26px;
+    left: 30px;
+    font-size: 24px;
+    color: #000000;
+    position: absolute;
+    background: none;
+    border: none;
+}
+
+
 .gallery-modal {
 	display: flex;
 	align-items: flex-start;

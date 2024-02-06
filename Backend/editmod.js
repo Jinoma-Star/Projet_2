@@ -110,7 +110,8 @@ const openAddWorkModal = () => {
     document.getElementById('modalTitle').textContent = 'Ajout Photo';
     const insideModal = document.getElementById('insideModal');
     insideModal.innerHTML = `
-        <div id="add-work">
+    <button id="cancelAddButton"><i class="fa-solid fa-arrow-left"></i></button>    
+    <div id="add-work">
             <h3>Ajout photo</h3>
             <input type="file" id="workImage" accept="image/*" required>
             <div id="add-work-form">
@@ -123,7 +124,6 @@ const openAddWorkModal = () => {
             </div>
             <div class="line"></div>
             <button id="submitButton" disabled>Valider</button>
-            <button id="cancelAddButton"><i class="fa-solid fa-arrow-left"></i></button>
         </div>
     `;
 
