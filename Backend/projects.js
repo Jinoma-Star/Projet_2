@@ -36,6 +36,24 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
       figure.appendChild(deleteButton);
     }
 
+    function deleteWork(workId, figureElement) {
+      // Envoyer une requête de suppression au serveur avec l'ID du travail à supprimer
+      fetch(`http://localhost:5678/api/works/${workId}`, {
+          method: 'DELETE',
+          headers: {
+              'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+          }
+      })
+      .then(response => {
+          if (!response.ok) {
+              throw new Error('Failed to delete work');
+          }
+          // Supprimer l'élément HTML du travail de la galerie modale
+          figureElement.remove();
+      })
+      .catch(error => console.error('Error deleting work:', error));
+  }
+
     if (showCaptions) {
       const figcaption = document.createElement('figcaption');
       figcaption.textContent = work.title;

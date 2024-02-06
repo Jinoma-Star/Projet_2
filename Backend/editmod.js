@@ -46,7 +46,7 @@ function loadGalleryInModal(works) {
 
     // Ouverture de la modale en mode galerie
     const editLink = document.getElementById('editLink');
-editLink.addEventListener('click', () => {
+    editLink.addEventListener('click', () => {
     modalOverlay.style.display = 'block';
     editModal.style.display = 'block';
     galleryView.style.display = 'flex'; // Montrer la vue galerie
@@ -68,6 +68,7 @@ editLink.addEventListener('click', () => {
             closeModal();
         }
     });
+    
 
     // Transition vers la vue d'ajout
     addPhotoButton.addEventListener('click', () => {
