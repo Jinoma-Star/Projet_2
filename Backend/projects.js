@@ -20,7 +20,7 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
 
   works.forEach(work => {
     const figure = document.createElement('figure');
-    figure.classList.add('gallery-item'); // Ajout d'une classe pour le styling
+    figure.classList.add('gallery-item'); 
 
     const img = document.createElement('img');
     img.src = work.imageUrl;
@@ -48,7 +48,7 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
           if (!response.ok) {
               throw new Error('Failed to delete work');
           }
-          // Supprimer l'élément HTML du travail de la galerie modale
+          
           figureElement.remove();
       })
       .catch(error => console.error('Error deleting work:', error));
@@ -64,6 +64,7 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
   });
 }
 
+//Chargement des catégories
 function fetchCategories(works) {
   fetch('http://localhost:5678/api/categories')
     .then(response => response.json())
@@ -75,7 +76,7 @@ function fetchCategories(works) {
 
 function categoryFilter(categories, works) {
   const filtersDiv = document.getElementById('filters');
-  filtersDiv.innerHTML = ''; // Nettoie les filtres avant l'affichage
+  filtersDiv.innerHTML = ''; 
 
   const allButton = document.createElement('button');
   allButton.textContent = 'Tous';
@@ -107,6 +108,6 @@ function updateActiveButton(activeButton) {
 
 function worksFilter(categoryName, works) {
   const filteredWorks = works.filter(work => work.category.name === categoryName);
-  worksGallery(filteredWorks, '.gallery', true); // Pass true pour afficher les sous-titres
+  worksGallery(filteredWorks, '.gallery', true);
 }
 

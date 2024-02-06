@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const editModal = document.getElementById('editModal');
     const closeModalIcon = document.getElementById('closeModalIcon');
     const addPhotoButton = document.getElementById('workaddbutton');
-    const galleryView = document.getElementById('galleryView'); // Vue galerie
-    const addWorkView = document.getElementById('addWorkView'); // Vue ajout de travail
+    const galleryView = document.getElementById('galleryView');
+    const addWorkView = document.getElementById('addWorkView'); 
     const cancelAddButton = document.getElementById('cancelAddButton');
     const submitButton = document.getElementById('submitButton');
     const workImageInput = document.getElementById('workImage');
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Authentification et affichage des éléments UI
     if (sessionStorage.getItem('authToken')) {
-        loginLogoutLink.textContent = 'Logout';
+        loginLogoutLink.textContent = 'logout';
         loginLogoutLink.href = '#';
         editModeBanner.style.display = 'block';
 
@@ -30,18 +30,18 @@ document.addEventListener('DOMContentLoaded', () => {
         filtersDiv.style.display = 'none';
         editLinkContainer.style.display = 'block';
     } else {
-        loginLogoutLink.textContent = 'Login';
+        loginLogoutLink.textContent = 'login';
         loginLogoutLink.href = 'login.html';
         editModeBanner.style.display = 'none';
         filtersDiv.style.display = 'flex';
         editLinkContainer.style.display = 'none';
     }
 
-
+//Chargement de la galerie de travaux dans la modale
 function loadGalleryInModal(works) {
     galleryView.style.display = 'flex'; // Montrer la vue galerie
     addWorkView.style.display = 'none'; // Cacher la vue ajout
-    worksGallery(works, '.gallery-modal', false); // Chargez la galerie dans la modale sans sous-titres
+    worksGallery(works, '.gallery-modal', false); // Chargement de la galerie dans la modale sans sous-titres
 }
 
     // Ouverture de la modale en mode galerie
@@ -49,9 +49,7 @@ function loadGalleryInModal(works) {
     editLink.addEventListener('click', () => {
     modalOverlay.style.display = 'block';
     editModal.style.display = 'block';
-    galleryView.style.display = 'flex'; // Montrer la vue galerie
-    addWorkView.style.display = 'none'; // Cacher la vue ajout
-    loadGalleryInModal(worksData); // Utilisez les données de travaux de la variable globale
+    loadGalleryInModal(worksData); // 
 });
 
     // Fermeture de la modale
@@ -62,6 +60,7 @@ function loadGalleryInModal(works) {
         addWorkView.style.display = 'none';
     };
 
+    //Si clique sur Overlay ou icone croix, fermeture de la modale
     closeModalIcon.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', (event) => {
         if (event.target === modalOverlay) {
@@ -75,7 +74,7 @@ function loadGalleryInModal(works) {
         addWorkView.style.display = 'flex'; // Montrer la vue ajout
     });
 
-    // Retour à la vue galerie / Fermeture de la vue d'ajout
+    // Retour à la vue galerie 
     cancelAddButton.addEventListener('click', () => {
         galleryView.style.display = 'flex'; // Montrer la vue galerie
         addWorkView.style.display = 'none'; // Cacher la vue ajout
@@ -112,14 +111,13 @@ function loadGalleryInModal(works) {
             return response.json();
         })
         .then(newWork => {
-            // Mettre à jour la galerie ici si nécessaire, puis fermer la modale
             console.log('New work added:', newWork);
             closeModal();
         })
         .catch(error => console.error('Error adding work:', error));
     });
 
-    // Chargement initial des catégories
+    // Chargement initial des catégories dans la modale pour sélécteur
     const fetchCategoriesForSelect = () => {
         fetch('http://localhost:5678/api/categories')
             .then(response => response.json())
