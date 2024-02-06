@@ -36,7 +36,7 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
       figure.appendChild(deleteButton);
     }
 
-    function deleteWork(workId, figureElement) {
+    function deleteWork(workId) {
       // Envoyer une requête de suppression au serveur avec l'ID du travail à supprimer
       fetch(`http://localhost:5678/api/works/${workId}`, {
           method: 'DELETE',
@@ -45,13 +45,18 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
           }
       })
       .then(response => {
-          if (!response.ok) {
-              throw new Error('Failed to delete work');
-          }
-          
-          figureElement.remove();
-      })
-      .catch(error => console.error('Error deleting work:', error));
+        if (!response.ok) {
+            throw new Error('Failed to delete work');
+        }
+        // Retirez l'œuvre supprimée de worksData
+        const index = worksData.findIndex(work => work.id === workId);
+        if (index > -1) {
+            worksData.splice(index, 1);
+        }
+        refreshMainGallery(); // Rafraîchissez la galerie principale
+        refreshModalGallery(); // Rafraîchissez la galerie de la modale
+    })
+    .catch(error => console.error('Error deleting work:', error));
   }
 
     if (showCaptions) {
@@ -62,6 +67,7 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
 
     gallery.appendChild(figure);
   });
+
 }
 
 //Chargement des catégories
@@ -111,3 +117,17 @@ function worksFilter(categoryName, works) {
   worksGallery(filteredWorks, '.gallery', true);
 }
 
+function refreshMainGallery() {
+  fetch('http://localhost:5678/api/works')
+      .then(response => response.json())
+      .then(works => {
+          initializeGalleryAndFilters(works);
+      })
+      .catch(error => console.error('Erreur lors de la récupération des images:', error));
+}
+
+function refreshModalGallery() {
+  if (document.getElementById('modalOverlay').style.display === 'block') {
+      window.loadGalleryInModal(worksData);
+  }
+}

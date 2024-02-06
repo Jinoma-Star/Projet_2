@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 //Chargement de la galerie de travaux dans la modale
-function loadGalleryInModal(works) {
+    window.loadGalleryInModal = function(works) {
     galleryView.style.display = 'flex'; // Montrer la vue galerie
     addWorkView.style.display = 'none'; // Cacher la vue ajout
     worksGallery(works, '.gallery-modal', false); // Chargement de la galerie dans la modale sans sous-titres
@@ -111,11 +111,19 @@ function loadGalleryInModal(works) {
             return response.json();
         })
         .then(newWork => {
-            console.log('New work added:', newWork);
-            closeModal();
+            worksData.push(newWork); // Ajoutez la nouvelle œuvre à worksData
+            refreshMainGallery(); // Rafraîchissez la galerie principale
+            refreshModalGallery(); // Rafraîchissez la galerie de la modale
         })
         .catch(error => console.error('Error adding work:', error));
+
     });
+
+    function refreshModalGallery() {
+        if (modalOverlay.style.display === 'block') {
+            window.loadGalleryInModal(worksData);
+        }
+    }
 
     // Chargement initial des catégories dans la modale pour sélécteur
     const fetchCategoriesForSelect = () => {
