@@ -68,7 +68,6 @@ function loadGalleryInModal(works) {
             closeModal();
         }
     });
-    
 
     // Transition vers la vue d'ajout
     addPhotoButton.addEventListener('click', () => {
@@ -77,7 +76,11 @@ function loadGalleryInModal(works) {
     });
 
     // Retour à la vue galerie / Fermeture de la vue d'ajout
-    cancelAddButton.addEventListener('click', closeModal);
+    cancelAddButton.addEventListener('click', () => {
+        galleryView.style.display = 'flex'; // Montrer la vue galerie
+        addWorkView.style.display = 'none'; // Cacher la vue ajout
+    });
+
 
     // Activation du bouton de soumission en fonction de la complétude du formulaire
     const checkFormCompletion = () => {
