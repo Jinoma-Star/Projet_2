@@ -82,15 +82,32 @@
 </footer>
 
 <div id="modalOverlay"></div>
-		<div id="editModal">
-			<i class="fa-solid fa-xmark" id="closeModalIcon"></i>
-			<div id="insideModal">
-				<h3 id="modalTitle">Galerie photo</h3>
-				<div class="gallery-modal"></div>
-				<div class="line"></div>
-				<button id="workaddbutton">Ajouter une photo</button>
-			</div>
-		</div>
+<div id="editModal" style="display: none;">
+    <i class="fa-solid fa-xmark" id="closeModalIcon"></i>
+    <div id="galleryView" class="modal-content">
+        <h3 id="modalTitle">Galerie photo</h3>
+        <div class="gallery-modal" id="gallery-modal"></div>
+        <div class="line"></div>
+        <button id="workaddbutton">Ajouter une photo</button>
+    </div>
+    <div id="addWorkView" class="modal-content" style="display: none;">
+        <button id="cancelAddButton"><i class="fa-solid fa-arrow-left"></i></button>
+        <div id="add-work">
+            <h3>Ajout photo</h3>
+            <input type="file" id="workImage" accept="image/*" required>
+            <div id="add-work-form">
+                <label for="workTitle">Titre</label>
+                <input type="text" id="workTitle" required>
+                <label for="workCategory">Catégorie</label>
+                <select id="workCategory" required>
+                    <option value=""></option>
+                </select>
+            </div>
+            <div class="line"></div>
+            <button id="submitButton" disabled>Valider</button>
+        </div>
+    </div>
+</div>
 
 <script src="../Backend/projects.js"></script>
 <script src="../Backend/editmod.js"></script>

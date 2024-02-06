@@ -1,205 +1,133 @@
-let initialModalContent = '';
-let works = [];
-
 document.addEventListener('DOMContentLoaded', () => {
     const loginLogoutLink = document.getElementById('loginLogoutLink');
     const editModeBanner = document.getElementById('editModeBanner');
     const filtersDiv = document.getElementById('filters');
     const editLinkContainer = document.getElementById('editLinkContainer');
-    const editLink = document.getElementById('editLink');
     const modalOverlay = document.getElementById('modalOverlay');
+    const editModal = document.getElementById('editModal');
+    const closeModalIcon = document.getElementById('closeModalIcon');
+    const addPhotoButton = document.getElementById('workaddbutton');
+    const galleryView = document.getElementById('galleryView'); // Vue galerie
+    const addWorkView = document.getElementById('addWorkView'); // Vue ajout de travail
+    const cancelAddButton = document.getElementById('cancelAddButton');
+    const submitButton = document.getElementById('submitButton');
+    const workImageInput = document.getElementById('workImage');
+    const workTitleInput = document.getElementById('workTitle');
+    const workCategorySelect = document.getElementById('workCategory');
 
+    // Authentification et affichage des éléments UI
     if (sessionStorage.getItem('authToken')) {
-        loginLogoutLink.textContent = 'logout';
+        loginLogoutLink.textContent = 'Logout';
         loginLogoutLink.href = '#';
         editModeBanner.style.display = 'block';
 
         loginLogoutLink.addEventListener('click', (event) => {
             event.preventDefault();
-            sessionStorage.removeItem('authToken');
-            sessionStorage.removeItem('editMode');
-            editModeBanner.style.display = 'none';
-            window.location.href = 'index.html';
+            sessionStorage.clear(); // Clear all session storage
+            window.location.reload(); // Reload the page to reflect changes
         });
 
         filtersDiv.style.display = 'none';
         editLinkContainer.style.display = 'block';
     } else {
-        loginLogoutLink.textContent = 'login';
+        loginLogoutLink.textContent = 'Login';
         loginLogoutLink.href = 'login.html';
         editModeBanner.style.display = 'none';
         filtersDiv.style.display = 'flex';
         editLinkContainer.style.display = 'none';
     }
 
-    const closeModalIcon = document.getElementById('closeModalIcon');
-    if (closeModalIcon) {
-        closeModalIcon.addEventListener('click', () => {
-            closeModal();
-        });
-    }
 
-    const addPhotoButton = document.getElementById('workaddbutton');
-    if (addPhotoButton) {
-        addPhotoButton.addEventListener('click', openAddWorkModal);
-    }
-
-    const openModal = () => {
-        fetch('http://localhost:5678/api/works')
-            .then(response => response.json())
-            .then(data => {
-                works = data;
-                worksGallery(works, '.gallery-modal', false);
-            })
-            .catch(error => console.error('Erreur lors de la récupération des images:', error));
-
-        document.getElementById('modalOverlay').style.display = 'block';
-        document.getElementById('editModal').style.display = 'block';
-        initialModalContent = insideModal.innerHTML;
-
-        const addPhotoButton = document.getElementById('workaddbutton');
-        if (addPhotoButton) {
-            addPhotoButton.removeEventListener('click', openAddWorkModal);
-            addPhotoButton.addEventListener('click', openAddWorkModal);
-        }
-    };
-
-    const resetModal = () => {
-        const insideModal = document.getElementById('insideModal');
-        insideModal.innerHTML = initialModalContent;
-
-        const addPhotoButton = document.getElementById('workaddbutton');
-        if (addPhotoButton) {
-            addPhotoButton.removeEventListener('click', openAddWorkModal);
-            addPhotoButton.addEventListener('click', openAddWorkModal);
-        }
-    };
-
-    const closeModal = () => {
-        resetModal();
-        document.getElementById('modalOverlay').style.display = 'none';
-        document.getElementById('editModal').style.display = 'none';
-    };
-
-    if (editLink) {
-        editLink.removeEventListener('click', openModal);
-        editLink.addEventListener('click', openModal);
-    }
-    if (modalOverlay) {
-        modalOverlay.addEventListener('click', closeModal);
-    }
-});
-
-function deleteWork(workId, figureElement) {
-    fetch(`http://localhost:5678/api/works/${workId}`, {
-        method: 'DELETE',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Échec de la suppression de l\'œuvre');
-        }
-        figureElement.remove();
-    })
-    .catch(error => console.error('Erreur lors de la suppression:', error));
+function loadGalleryInModal(works) {
+    galleryView.style.display = 'flex'; // Montrer la vue galerie
+    addWorkView.style.display = 'none'; // Cacher la vue ajout
+    worksGallery(works, '.gallery-modal', false); // Chargez la galerie dans la modale sans sous-titres
 }
 
-const openAddWorkModal = () => {
-    document.getElementById('modalTitle').textContent = 'Ajout Photo';
-    const insideModal = document.getElementById('insideModal');
-    insideModal.innerHTML = `
-    <button id="cancelAddButton"><i class="fa-solid fa-arrow-left"></i></button>    
-    <div id="add-work">
-            <h3>Ajout photo</h3>
-            <input type="file" id="workImage" accept="image/*" required>
-            <div id="add-work-form">
-                <label for="workTitle">Titre</label>
-                <input type="text" id="workTitle" required>
-                <label for="workCategory">Catégorie</label>
-                <select id="workCategory" required>
-                    <option value=""></option>
-                </select>
-            </div>
-            <div class="line"></div>
-            <button id="submitButton" disabled>Valider</button>
-        </div>
-    `;
+    // Ouverture de la modale en mode galerie
+    const editLink = document.getElementById('editLink');
+editLink.addEventListener('click', () => {
+    modalOverlay.style.display = 'block';
+    editModal.style.display = 'block';
+    galleryView.style.display = 'flex'; // Montrer la vue galerie
+    addWorkView.style.display = 'none'; // Cacher la vue ajout
+    loadGalleryInModal(worksData); // Utilisez les données de travaux de la variable globale
+});
 
-    const workCategorySelect = document.getElementById('workCategory');
-    workCategorySelect.value = "";
+    // Fermeture de la modale
+    const closeModal = () => {
+        modalOverlay.style.display = 'none';
+        editModal.style.display = 'none';
+        galleryView.style.display = 'none';
+        addWorkView.style.display = 'none';
+    };
+
+    closeModalIcon.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', (event) => {
+        if (event.target === modalOverlay) {
+            closeModal();
+        }
+    });
+
+    // Transition vers la vue d'ajout
+    addPhotoButton.addEventListener('click', () => {
+        galleryView.style.display = 'none'; // Cacher la vue galerie
+        addWorkView.style.display = 'flex'; // Montrer la vue ajout
+    });
+
+    // Retour à la vue galerie / Fermeture de la vue d'ajout
+    cancelAddButton.addEventListener('click', closeModal);
+
+    // Activation du bouton de soumission en fonction de la complétude du formulaire
+    const checkFormCompletion = () => {
+        submitButton.disabled = !workImageInput.files.length || !workTitleInput.value.trim();
+    };
+
+    workImageInput.addEventListener('change', checkFormCompletion);
+    workTitleInput.addEventListener('input', checkFormCompletion);
+    workCategorySelect.addEventListener('change', checkFormCompletion);
+
+    // Soumission d'une nouvelle œuvre
+    submitButton.addEventListener('click', () => {
+        const formData = new FormData();
+        formData.append('image', workImageInput.files[0]);
+        formData.append('title', workTitleInput.value);
+        formData.append('category', workCategorySelect.value);
+
+        fetch('http://localhost:5678/api/works', {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+            },
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to add new work');
+            }
+            return response.json();
+        })
+        .then(newWork => {
+            // Mettre à jour la galerie ici si nécessaire, puis fermer la modale
+            console.log('New work added:', newWork);
+            closeModal();
+        })
+        .catch(error => console.error('Error adding work:', error));
+    });
+
+    // Chargement initial des catégories
+    const fetchCategoriesForSelect = () => {
+        fetch('http://localhost:5678/api/categories')
+            .then(response => response.json())
+            .then(categories => {
+                workCategorySelect.innerHTML = '<option value="">Select a category</option>';
+                categories.forEach(category => {
+                    const option = new Option(category.name, category.id);
+                    workCategorySelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error fetching categories:', error));
+    };
 
     fetchCategoriesForSelect();
-
-    document.getElementById('workImage').addEventListener('change', checkFormCompletion);
-    document.getElementById('workTitle').addEventListener('input', checkFormCompletion);
-
-    document.getElementById('modalOverlay').style.display = 'block';
-    document.getElementById('editModal').style.display = 'block';
-
-    document.getElementById('submitButton').addEventListener('click', submitNewWork);
-
-    workCategorySelect.addEventListener('change', () => {
-        if (workCategorySelect.value === "") {
-            workCategorySelect.value = "";
-        }
-    });
-
-    document.getElementById('cancelAddButton').addEventListener('click', () => {
-        closeModal();
-    });
-};
-
-const checkFormCompletion = () => {
-    const imageInput = document.getElementById('workImage').files.length;
-    const titleInput = document.getElementById('workTitle').value.trim().length;
-    const submitButton = document.getElementById('submitButton');
-
-    submitButton.disabled = !(imageInput && titleInput);
-};
-
-const fetchCategoriesForSelect = () => {
-    fetch('http://localhost:5678/api/categories')
-        .then(response => response.json())
-        .then(categories => {
-            const select = document.getElementById('workCategory');
-            select.innerHTML = '';
-            select.appendChild(new Option('', ''));
-            categories.forEach(category => {
-                const option = document.createElement('option');
-                option.value = category.id;
-                option.textContent = category.name;
-                select.appendChild(option);
-            });
-        })
-        .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
-
-    document.getElementById('workCategory').value = "";
-};
-
-const submitNewWork = () => {
-    const formData = new FormData();
-    formData.append('image', document.getElementById('workImage').files[0]);
-    formData.append('title', document.getElementById('workTitle').value);
-    formData.append('category', document.getElementById('workCategory').value);
-
-    fetch('http://localhost:5678/api/works', {
-        method: 'POST',
-        headers: {
-            'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
-        },
-        body: formData
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Échec de l\'ajout de l\'œuvre');
-        }
-        return response.json();
-    })
-    .then(newWork => {
-        closeModal();
-        worksGallery([...works, newWork], '.gallery', true); 
-    })
-    .catch(error => console.error('Erreur lors de l\'ajout:', error));
-};
+});

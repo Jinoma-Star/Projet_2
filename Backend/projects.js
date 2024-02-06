@@ -1,7 +1,10 @@
+let worksData = [];
+
 // Chargement initial des données des travaux
 fetch('http://localhost:5678/api/works')
   .then(response => response.json())
   .then(works => {
+    worksData = works; // Stockez les données de travaux dans la variable globale
     initializeGalleryAndFilters(works);
   })
   .catch(error => console.error('Erreur lors de la récupération des images:', error));
@@ -88,3 +91,4 @@ function worksFilter(categoryName, works) {
   const filteredWorks = works.filter(work => work.category.name === categoryName);
   worksGallery(filteredWorks, '.gallery', true); // Pass true pour afficher les sous-titres
 }
+
