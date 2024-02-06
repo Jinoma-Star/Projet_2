@@ -1,8 +1,7 @@
 let initialModalContent = '';
-
+let works = [];
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Éléments pour la gestion de la connexion/déconnexion et du mode édition
     const loginLogoutLink = document.getElementById('loginLogoutLink');
     const editModeBanner = document.getElementById('editModeBanner');
     const filtersDiv = document.getElementById('filters');
@@ -10,26 +9,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const editLink = document.getElementById('editLink');
     const modalOverlay = document.getElementById('modalOverlay');
 
-   
-    // Vérifier si un token d'authentification est stocké
     if (sessionStorage.getItem('authToken')) {
         loginLogoutLink.textContent = 'logout';
         loginLogoutLink.href = '#';
-        editModeBanner.style.display = 'block'; // Afficher le bandeau Mode Édition
+        editModeBanner.style.display = 'block';
 
         loginLogoutLink.addEventListener('click', (event) => {
             event.preventDefault();
             sessionStorage.removeItem('authToken');
-            sessionStorage.removeItem('editMode'); // Retirer l'information du mode édition
-            editModeBanner.style.display = 'none'; // Masquer le bandeau Mode Édition
+            sessionStorage.removeItem('editMode');
+            editModeBanner.style.display = 'none';
             window.location.href = 'index.html';
         });
 
-        // Utilisateur connecté : masquer les filtres et afficher le lien d'édition
         filtersDiv.style.display = 'none';
         editLinkContainer.style.display = 'block';
     } else {
-        // Utilisateur non connecté : afficher les filtres et masquer le lien d'édition
         loginLogoutLink.textContent = 'login';
         loginLogoutLink.href = 'login.html';
         editModeBanner.style.display = 'none';
@@ -37,11 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         editLinkContainer.style.display = 'none';
     }
 
-
     const closeModalIcon = document.getElementById('closeModalIcon');
     if (closeModalIcon) {
         closeModalIcon.addEventListener('click', () => {
-            closeModal(); // Assurez-vous que cette fonction est définie pour fermer la modale
+            closeModal();
         });
     }
 
@@ -50,35 +44,43 @@ document.addEventListener('DOMContentLoaded', () => {
         addPhotoButton.addEventListener('click', openAddWorkModal);
     }
 
-
-    // Fonction pour ouvrir la modale
     const openModal = () => {
         fetch('http://localhost:5678/api/works')
-        .then(response => response.json())
-        .then(works => {
-            worksGallery(works, '.gallery-modal', false); // Pas de sous-titres dans la modale
-        })
-        .catch(error => console.error('Erreur lors de la récupération des images:', error));
-    
+            .then(response => response.json())
+            .then(data => {
+                works = data;
+                worksGallery(works, '.gallery-modal', false);
+            })
+            .catch(error => console.error('Erreur lors de la récupération des images:', error));
+
         document.getElementById('modalOverlay').style.display = 'block';
         document.getElementById('editModal').style.display = 'block';
         initialModalContent = insideModal.innerHTML;
+
+        const addPhotoButton = document.getElementById('workaddbutton');
+        if (addPhotoButton) {
+            addPhotoButton.removeEventListener('click', openAddWorkModal);
+            addPhotoButton.addEventListener('click', openAddWorkModal);
+        }
     };
 
-    // Fonction pour réinitialiser la modal à son état initial
     const resetModal = () => {
         const insideModal = document.getElementById('insideModal');
-        insideModal.innerHTML = initialModalContent; // Restaurer le contenu initial
+        insideModal.innerHTML = initialModalContent;
+
+        const addPhotoButton = document.getElementById('workaddbutton');
+        if (addPhotoButton) {
+            addPhotoButton.removeEventListener('click', openAddWorkModal);
+            addPhotoButton.addEventListener('click', openAddWorkModal);
+        }
     };
 
-    // Fonction pour fermer la modale
     const closeModal = () => {
-        resetModal(); // Réinitialise la modal avant de la fermer
+        resetModal();
         document.getElementById('modalOverlay').style.display = 'none';
         document.getElementById('editModal').style.display = 'none';
     };
 
-    // Ajout d'écouteurs d'événements
     if (editLink) {
         editLink.removeEventListener('click', openModal);
         editLink.addEventListener('click', openModal);
@@ -88,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// Fonction pour supprimer une œuvre
 function deleteWork(workId, figureElement) {
     fetch(`http://localhost:5678/api/works/${workId}`, {
         method: 'DELETE',
@@ -100,14 +101,12 @@ function deleteWork(workId, figureElement) {
         if (!response.ok) {
             throw new Error('Échec de la suppression de l\'œuvre');
         }
-        figureElement.remove(); // Retire l'œuvre du DOM
+        figureElement.remove();
     })
     .catch(error => console.error('Erreur lors de la suppression:', error));
 }
 
-// Fonction pour ouvrir le formulaire d'ajout d'œuvre
 const openAddWorkModal = () => {
-    // Modifier le titre de la modale et son contenu
     document.getElementById('modalTitle').textContent = 'Ajout Photo';
     const insideModal = document.getElementById('insideModal');
     insideModal.innerHTML = `
@@ -124,10 +123,10 @@ const openAddWorkModal = () => {
             </div>
             <div class="line"></div>
             <button id="submitButton" disabled>Valider</button>
+            <button id="cancelAddButton"><i class="fa-solid fa-arrow-left"></i></button>
         </div>
     `;
 
-    // Réinitialiser le sélecteur de catégorie à vide
     const workCategorySelect = document.getElementById('workCategory');
     workCategorySelect.value = "";
 
@@ -139,19 +138,19 @@ const openAddWorkModal = () => {
     document.getElementById('modalOverlay').style.display = 'block';
     document.getElementById('editModal').style.display = 'block';
 
-    // Ajouter l'écouteur d'événement pour le bouton "Valider" après sa création
     document.getElementById('submitButton').addEventListener('click', submitNewWork);
 
-    // Ajouter un écouteur pour supprimer l'option vide lorsque l'utilisateur sélectionne une catégorie
     workCategorySelect.addEventListener('change', () => {
         if (workCategorySelect.value === "") {
-            // L'utilisateur a sélectionné l'option vide, réinitialisez-la
             workCategorySelect.value = "";
         }
     });
+
+    document.getElementById('cancelAddButton').addEventListener('click', () => {
+        closeModal();
+    });
 };
 
-// Fonction pour vérifier si le formulaire est complet
 const checkFormCompletion = () => {
     const imageInput = document.getElementById('workImage').files.length;
     const titleInput = document.getElementById('workTitle').value.trim().length;
@@ -160,14 +159,13 @@ const checkFormCompletion = () => {
     submitButton.disabled = !(imageInput && titleInput);
 };
 
-// Fonction pour ajouter les catégories au sélecteur dans la modale
 const fetchCategoriesForSelect = () => {
     fetch('http://localhost:5678/api/categories')
         .then(response => response.json())
         .then(categories => {
             const select = document.getElementById('workCategory');
-            select.innerHTML = ''; // Nettoyer les options précédentes
-            select.appendChild(new Option('', '')); // Option vide par défaut
+            select.innerHTML = '';
+            select.appendChild(new Option('', ''));
             categories.forEach(category => {
                 const option = document.createElement('option');
                 option.value = category.id;
@@ -177,11 +175,9 @@ const fetchCategoriesForSelect = () => {
         })
         .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
 
-    // Forcer la valeur vide du sélecteur de catégorie après avoir chargé les catégories
     document.getElementById('workCategory').value = "";
 };
 
-// Fonction pour soumettre le nouveau travail
 const submitNewWork = () => {
     const formData = new FormData();
     formData.append('image', document.getElementById('workImage').files[0]);
@@ -207,4 +203,3 @@ const submitNewWork = () => {
     })
     .catch(error => console.error('Erreur lors de l\'ajout:', error));
 };
-
