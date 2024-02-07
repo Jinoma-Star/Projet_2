@@ -373,6 +373,7 @@ li:hover {
 
 .gallery img {
 	width: 100%;
+	min-height: 491px;
 
 
 /* CONTACT */

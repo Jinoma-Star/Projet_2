@@ -1,10 +1,10 @@
-let worksData = [];
+let worksData = []; // Stockez les données de travaux dans la variable globale
 
 // Chargement initial des données des travaux
 fetch('http://localhost:5678/api/works')
   .then(response => response.json())
   .then(works => {
-    worksData = works; // Stockez les données de travaux dans la variable globale
+    worksData = works; 
     initializeGalleryAndFilters(works);
   })
   .catch(error => console.error('Erreur lors de la récupération des images:', error));
@@ -14,7 +14,7 @@ function initializeGalleryAndFilters(works) {
   fetchCategories(works); // Initialise les filtres avec les catégories
 }
 
-function worksGallery(works, gallerySelector, showCaptions = true) {
+function worksGallery(works, gallerySelector, showCaptions) {
   const gallery = document.querySelector(gallerySelector);
   gallery.innerHTML = ''; // Nettoie la galerie avant l'affichage
 
@@ -36,28 +36,6 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
       figure.appendChild(deleteButton);
     }
 
-    function deleteWork(workId) {
-      // Envoyer une requête de suppression au serveur avec l'ID du travail à supprimer
-      fetch(`http://localhost:5678/api/works/${workId}`, {
-          method: 'DELETE',
-          headers: {
-              'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
-          }
-      })
-      .then(response => {
-        if (!response.ok) {
-            throw new Error('Failed to delete work');
-        }
-        // Retirez l'œuvre supprimée de worksData
-        const index = worksData.findIndex(work => work.id === workId);
-        if (index > -1) {
-            worksData.splice(index, 1);
-        }
-        refreshMainGallery(); // Rafraîchissez la galerie principale
-        refreshModalGallery(); // Rafraîchissez la galerie de la modale
-    })
-    .catch(error => console.error('Error deleting work:', error));
-  }
 
     if (showCaptions) {
       const figcaption = document.createElement('figcaption');
@@ -69,6 +47,30 @@ function worksGallery(works, gallerySelector, showCaptions = true) {
   });
 
 }
+
+function deleteWork(workId) {
+  // Envoyer une requête de suppression au serveur avec l'ID du travail à supprimer
+  fetch(`http://localhost:5678/api/works/${workId}`, {
+      method: 'DELETE',
+      headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+      }
+  })
+  .then(response => {
+    if (!response.ok) {
+        throw new Error('Failed to delete work');
+    }
+    // Retirez l'œuvre supprimée de worksData
+    const index = worksData.findIndex(work => work.id === workId);
+    if (index > -1) {
+        worksData.splice(index, 1);
+    }
+    refreshMainGallery(); // Rafraîchissez la galerie principale
+    refreshModalGallery(); // Rafraîchissez la galerie de la modale
+})
+.catch(error => console.error('Error deleting work:', error));
+}
+
 
 //Chargement des catégories
 function fetchCategories(works) {
