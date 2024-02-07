@@ -112,8 +112,8 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(newWork => {
             worksData.push(newWork); // Ajoutez la nouvelle œuvre à worksData
-            refreshMainGallery(); // Rafraîchissez la galerie principale
-            refreshModalGallery(); // Rafraîchissez la galerie de la modale
+            refreshMainGallery(); // Rafraîchie la galerie principale
+            refreshModalGallery(); // Rafraîchie la galerie de la modale
         })
         .catch(error => console.error('Error adding work:', error));
 
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', () => {
         fetch('http://localhost:5678/api/categories')
             .then(response => response.json())
             .then(categories => {
-                workCategorySelect.innerHTML = '<option value="">Select a category</option>';
+                workCategorySelect.innerHTML = '<option value="">Séléctionnez une catégorie</option>';
                 categories.forEach(category => {
                     const option = new Option(category.name, category.id);
                     workCategorySelect.appendChild(option);
