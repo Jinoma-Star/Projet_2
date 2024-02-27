@@ -354,7 +354,7 @@ li:hover {
     height: 36px;
     flex-shrink: 0;
     border-radius: 60px;
-    background: gray;
+    background: #B3B3B3;
     color: #FFF;
     text-align: center;
     font-family: Syne;
@@ -363,8 +363,36 @@ li:hover {
     font-weight: 700;
     line-height: normal;
 }
+#workImage {
+	display: flex;
+	width: 420px;
+	height: 169px;
+	background-color: #E8F1F6;
+}
 
+#picturePreview {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	background-color: #E8F1F6;
+	gap: 10px;
+	padding: 20px 135px 20px 135px;
+}
 
+.fa-regular::before {
+	font-size: 76px;
+	color: #B9C5CC;
+}
+    
+
+#customFileUpload {
+	display: inline-block; 
+	background-color: #b3b3b3; 
+	color: white; 
+	padding: 10px 20px; 
+	border-radius: 20px; 
+	cursor: pointer;
+}
 
 /* GALERIE*/
 #galleryhead {
