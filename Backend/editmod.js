@@ -80,7 +80,6 @@ document.addEventListener('DOMContentLoaded', () => {
         addWorkView.style.display = 'none'; // Cacher la vue ajout
     });
 
-
     // Activation du bouton de soumission en fonction de la complétude du formulaire
     const checkFormCompletion = () => {
         const isFormComplete = workImageInput.files.length && workTitleInput.value.trim() && workCategorySelect.value;
@@ -150,3 +149,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     fetchCategoriesForSelect();
 });
+
+
+// Preview de l'image uploadée
+document.addEventListener('DOMContentLoaded', function() {
+    var workImageInput = document.getElementById('workImage');
+    var picturePreview = document.getElementById('picturePreview');
+
+    workImageInput.addEventListener('change', function() {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function(e) {
+                // Cacher les éléments inutiles dans picturePreview
+                while (picturePreview.firstChild) {
+                    picturePreview.removeChild(picturePreview.firstChild);
+                }
+
+                // Créer une nouvelle image pour la prévisualisation
+                var img = document.createElement('img');
+                img.src = e.target.result;
+                img.style.maxWidth = '100%'; // Assurez-vous que l'image ne dépasse pas les dimensions de l'aperçu
+                img.style.maxHeight = '130px'; // Limitez la hauteur de l'image de prévisualisation
+                picturePreview.appendChild(img);
+            };
+            
+            // Lire le fichier sélectionné et déclenchez l'événement onload
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+});
+
+
+
+const closeModalIcon = document.getElementById('closeModalIcon');
+const cancelAddButton = document.getElementById('cancelAddButton');
+const picturePreview = document.getElementById('picturePreview');
+const workImage = document.getElementById('workImage');
+const workTitle = document.getElementById('workTitle');
+const workCategory = document.getElementById('workCategory');
+
+// Fonction pour réinitialiser le formulaire et la prévisualisation
+function resetFormAndPreview() {
+    // Réinitialiser le formulaire
+    workImage.value = '';
+    workTitle.value = '';
+    workCategory.selectedIndex = 0;
+
+    // Réinitialiser la prévisualisation
+    picturePreview.innerHTML = `<i class="fa-regular fa-image"></i>
+                                <label for="workImage" id="customFileUpload">
+                                    + Ajouter photo
+                                </label>
+                                <p>jpg, png : 4mo max</p>`;
+
+}
+
+// Ajout des écouteurs d'événements pour réinitialiser lors de la fermeture ou du retour
+closeModalIcon.addEventListener('click', resetFormAndPreview);
+cancelAddButton.addEventListener('click', resetFormAndPreview);
+modalOverlay.addEventListener('click', resetFormAndPreview);

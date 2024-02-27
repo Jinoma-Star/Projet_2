@@ -180,6 +180,15 @@ li:hover {
 	color: white;
   }
 
+
+#editModeBanner {
+	display: none; 
+	background-color: black; 
+	color: white; 
+	text-align: center; 
+	padding: 10px;
+}
+
 /*MODAL*/
 #modalOverlay {
     display: none; /* caché par défaut */
