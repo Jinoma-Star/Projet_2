@@ -83,7 +83,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Activation du bouton de soumission en fonction de la complétude du formulaire
     const checkFormCompletion = () => {
-        submitButton.disabled = !workImageInput.files.length || !workTitleInput.value.trim();
+        const isFormComplete = workImageInput.files.length && workTitleInput.value.trim() && workCategorySelect.value;
+        submitButton.disabled = !isFormComplete; // Active ou désactive le bouton basé sur la complétude du formulaire
+    
+        if (isFormComplete) {
+            // Si le formulaire est complet, change le fond du bouton
+            submitButton.style.background = '#1D6154';
+        } else {
+            // Sinon, réinitialise le fond du bouton
+            submitButton.style.background = ''; 
+        }
     };
 
     workImageInput.addEventListener('change', checkFormCompletion);
@@ -111,7 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(newWork => {
-            worksData.push(newWork); // Ajoutez la nouvelle œuvre à worksData
+            worksData.push(newWork); // Ajoute la nouvelle œuvre à worksData
             refreshMainGallery(); // Rafraîchie la galerie principale
             refreshModalGallery(); // Rafraîchie la galerie de la modale
         })
