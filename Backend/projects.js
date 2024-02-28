@@ -82,6 +82,7 @@ function fetchCategories(works) {
     .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
 }
 
+// Filtrage des projets par catégorie
 function categoryFilter(categories, works) {
   const filtersDiv = document.getElementById('filters');
   filtersDiv.innerHTML = ''; 
@@ -106,6 +107,7 @@ function categoryFilter(categories, works) {
   });
 }
 
+// Ajout/Suppression de la class Button-Active sur le bouton filtre actif
 function updateActiveButton(activeButton) {
   document.querySelectorAll('#filters button').forEach(button => {
     button.classList.remove('button-active');
