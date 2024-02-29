@@ -48,29 +48,6 @@ function worksGallery(works, gallerySelector, showCaptions) {
 
 }
 
-function deleteWork(workId) {
-  // Envoyer une requête de suppression au serveur avec l'ID du travail à supprimer
-  fetch(`http://localhost:5678/api/works/${workId}`, {
-      method: 'DELETE',
-      headers: {
-          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
-      }
-  })
-  .then(response => {
-    if (!response.ok) {
-        throw new Error('Failed to delete work');
-    }
-    // Retirez l'œuvre supprimée de worksData
-    const index = worksData.findIndex(work => work.id === workId);
-    if (index > -1) {
-        worksData.splice(index, 1);
-    }
-    refreshMainGallery(); // Rafraîchissez la galerie principale
-    refreshModalGallery(); // Rafraîchissez la galerie de la modale
-})
-.catch(error => console.error('Error deleting work:', error));
-}
-
 
 //Chargement des catégories
 function fetchCategories(works) {
@@ -120,6 +97,30 @@ function updateActiveButton(activeButton) {
 function worksFilter(categoryName, works) {
   const filteredWorks = works.filter(work => work.category.name === categoryName);
   worksGallery(filteredWorks, '.gallery', true);
+}
+
+
+function deleteWork(workId) {
+  // Envoyer une requête de suppression au serveur avec l'ID du travail à supprimer
+  fetch(`http://localhost:5678/api/works/${workId}`, {
+      method: 'DELETE',
+      headers: {
+          'Authorization': `Bearer ${sessionStorage.getItem('authToken')}`
+      }
+  })
+  .then(response => {
+    if (!response.ok) {
+        throw new Error('Failed to delete work');
+    }
+    // Retirez l'œuvre supprimée de worksData
+    const index = worksData.findIndex(work => work.id === workId);
+    if (index > -1) {
+        worksData.splice(index, 1);
+    }
+    refreshMainGallery(); // Rafraîchissez la galerie principale
+    refreshModalGallery(); // Rafraîchissez la galerie de la modale
+})
+.catch(error => console.error('Error deleting work:', error));
 }
 
 // Rafraichissement de la galerie principale
