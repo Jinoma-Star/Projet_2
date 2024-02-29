@@ -169,8 +169,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Créer une nouvelle image pour la prévisualisation
                 var img = document.createElement('img');
                 img.src = e.target.result;
-                img.style.maxWidth = '100%'; // Assurez-vous que l'image ne dépasse pas les dimensions de l'aperçu
-                img.style.maxHeight = '130px'; // Limitez la hauteur de l'image de prévisualisation
+                img.style.maxWidth = '100%';
+                img.style.maxHeight = '130px'; 
                 picturePreview.appendChild(img);
             };
             
