@@ -82,7 +82,7 @@ function fetchCategories(works) {
     .catch(error => console.error('Erreur lors de la récupération des catégories:', error));
 }
 
-// Filtrage des projets par catégorie
+// Création et assignations des boutons-filtres
 function categoryFilter(categories, works) {
   const filtersDiv = document.getElementById('filters');
   filtersDiv.innerHTML = ''; 
@@ -116,11 +116,13 @@ function updateActiveButton(activeButton) {
   activeButton.classList.add('button-active');
 }
 
+// Changement d'affichage de la galerie selon le filtre choisi
 function worksFilter(categoryName, works) {
   const filteredWorks = works.filter(work => work.category.name === categoryName);
   worksGallery(filteredWorks, '.gallery', true);
 }
 
+// Rafraichissement de la galerie principale
 function refreshMainGallery() {
   fetch('http://localhost:5678/api/works')
       .then(response => response.json())
@@ -130,6 +132,7 @@ function refreshMainGallery() {
       .catch(error => console.error('Erreur lors de la récupération des images:', error));
 }
 
+// Rafraichissement de la galerie dans la modale
 function refreshModalGallery() {
   if (document.getElementById('modalOverlay').style.display === 'block') {
       window.loadGalleryInModal(worksData);
